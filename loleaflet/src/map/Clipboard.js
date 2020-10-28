@@ -484,7 +484,7 @@ L.Clipboard = L.Class.extend({
 
 		var plainText = this.stripHTML(text);
 		if (ev.clipboardData) { // Standard
-			if (this._unoCommandForCopyCutPaste === '.uno:CopyHyperlinkLocation') {
+			if (!window.mode.isDesktop() && this._unoCommandForCopyCutPaste === '.uno:CopyHyperlinkLocation') {
 				var ess = 's';
 				var re = new RegExp('^(.*)(<a href=")([^"]+)(">.*</a>)(</p>\n</body>\n</html>)$', ess);
 				var match = re.exec(text);
@@ -665,7 +665,7 @@ L.Clipboard = L.Class.extend({
 			return true;
 		}
 
-		if (cmd === '.uno:Copy' || cmd === '.uno:CopyHyperlinkLocation') {
+		if (cmd === '.uno:Copy' || (!window.mode.isDesktop() && cmd === '.uno:CopyHyperlinkLocation')) {
 			this._execCopyCutPaste('copy', cmd);
 		} else if (cmd === '.uno:Cut') {
 			this._execCopyCutPaste('cut', cmd);
